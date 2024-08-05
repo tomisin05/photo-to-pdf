@@ -9,6 +9,15 @@
         #capture {
             margin-top: 10px;
         }
+        #preview {
+            display: none;
+            margin-top: 10px;
+            border: 1px solid black;
+        }
+        #download {
+            display: none;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -16,6 +25,7 @@
     <video id="video" width="320" height="240" autoplay></video>
     <button id="capture">Capture Photo</button>
     <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
+    <img id="preview" width="320" height="240">
     <a id="download" download="photo.pdf">Download PDF</a>
 
     <!-- Include jsPDF library from CDN -->
@@ -27,6 +37,7 @@
         const canvas = document.getElementById('canvas');
         const context = canvas.getContext('2d');
         const captureButton = document.getElementById('capture');
+        const preview = document.getElementById('preview');
         const downloadLink = document.getElementById('download');
         
         // Request camera access
@@ -42,6 +53,13 @@
         captureButton.addEventListener('click', () => {
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
             console.log('Photo captured'); // Debug statement
+            
+            // Display the captured image on the screen
+            const dataURL = canvas.toDataURL('image/jpeg');
+            preview.src = dataURL;
+            preview.style.display = 'block';
+
+            // Convert the image to a blob and create the PDF
             canvas.toBlob(blob => {
                 const url = URL.createObjectURL(blob);
                 console.log('Blob URL created:', url); // Debug statement
@@ -53,8 +71,8 @@
                     pdf.addImage(img, 'JPEG', 0, 0, 210, 297);
                     const pdfBlob = pdf.output('blob');
                     downloadLink.href = URL.createObjectURL(pdfBlob);
-                    downloadLink.click(); // Automatically trigger the download
-                    console.log('PDF created and download triggered'); // Debug statement
+                    downloadLink.style.display = 'block'; // Show download link
+                    console.log('PDF created and download link updated'); // Debug statement
                 };
             }, 'image/jpeg');
         });
