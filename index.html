@@ -17,7 +17,7 @@
     <button id="capture">Capture Photo</button>
     <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
     <a id="download" download="photo.pdf">Download PDF</a>
-    
+
     <!-- Include jsPDF library from CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     
@@ -41,17 +41,20 @@
         // Capture photo when button is clicked
         captureButton.addEventListener('click', () => {
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            
+            console.log('Photo captured'); // Debug statement
             canvas.toBlob(blob => {
                 const url = URL.createObjectURL(blob);
+                console.log('Blob URL created:', url); // Debug statement
+                const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF();
                 const img = new Image();
                 img.src = url;
                 img.onload = () => {
-                    pdf.addImage(img, 'JPEG', 0, 0, 210, 297); // Adjust dimensions as needed
+                    pdf.addImage(img, 'JPEG', 0, 0, 210, 297);
                     const pdfBlob = pdf.output('blob');
                     downloadLink.href = URL.createObjectURL(pdfBlob);
                     downloadLink.click(); // Automatically trigger the download
+                    console.log('PDF created and download triggered'); // Debug statement
                 };
             }, 'image/jpeg');
         });
