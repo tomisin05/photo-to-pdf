@@ -26,7 +26,7 @@
     <h1>Capture Photo and Convert to PDF</h1>
     <video id="video" autoplay></video>
     <button id="capture">Capture Photo</button>
-    <canvas id="canvas" style="display:none;"></canvas>
+    <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
     <img id="preview">
     <a id="download" download="photo.pdf">Download PDF</a>
 
@@ -52,6 +52,9 @@
         navigator.mediaDevices.getUserMedia(constraints)
             .then(stream => {
                 video.srcObject = stream;
+                video.onloadedmetadata = () => {
+                    video.play();
+                };
             })
             .catch(error => {
                 console.error('Error accessing camera:', error);
