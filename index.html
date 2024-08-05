@@ -5,6 +5,8 @@
     <style>
         #video {
             border: 1px solid black;
+            width: 320px;
+            height: 240px;
         }
         #capture {
             margin-top: 10px;
@@ -22,10 +24,10 @@
 </head>
 <body>
     <h1>Capture Photo and Convert to PDF</h1>
-    <video id="video" width="320" height="240" autoplay></video>
+    <video id="video" autoplay></video>
     <button id="capture">Capture Photo</button>
-    <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
-    <img id="preview" width="320" height="240">
+    <canvas id="canvas" style="display:none;"></canvas>
+    <img id="preview">
     <a id="download" download="photo.pdf">Download PDF</a>
 
     <!-- Include jsPDF library from CDN -->
@@ -40,17 +42,25 @@
         const preview = document.getElementById('preview');
         const downloadLink = document.getElementById('download');
         
-        // Request camera access
-        navigator.mediaDevices.getUserMedia({ video: true })
+        // Request camera access with back camera preference
+        const constraints = {
+            video: {
+                facingMode: { exact: 'environment' } // Use 'environment' to specify the back camera
+            }
+        };
+
+        navigator.mediaDevices.getUserMedia(constraints)
             .then(stream => {
                 video.srcObject = stream;
             })
             .catch(error => {
                 console.error('Error accessing camera:', error);
+                alert('Unable to access back camera. Please check permissions or use a different device.');
             });
         
         // Capture photo when button is clicked
         captureButton.addEventListener('click', () => {
+            // Draw the current frame from the video onto the canvas
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
             console.log('Photo captured'); // Debug statement
             
