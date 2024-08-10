@@ -3,8 +3,8 @@ import {BedrockRuntimeClient, ConverseCommand } from "@aws-sdk/client-bedrock-ru
   const client = new BedrockRuntimeClient({ 
     region: "us-east-1",  
     credentials: {
-    accessKeyId: 'AKIA4MTWNDC4EODNMHOE',
-    secretAccessKey: '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',    
+    accessKeyId: 'access',
+    secretAccessKey: 'secret',    
 }
 });
     const prompt = " i have issues with billing "
