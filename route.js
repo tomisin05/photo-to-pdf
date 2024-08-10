@@ -12,8 +12,8 @@ export async function POST(req) {
 const client = new BedrockRuntimeClient({ 
 region: "us-east-1",  
 credentials: {
-accessKeyId: 'AKIA4MTWNDC4EODNMHOE',
-secretAccessKey: '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',    
+accessKeyId: 'access key',
+secretAccessKey: 'secret',    
 }
 });
 
